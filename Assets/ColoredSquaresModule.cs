@@ -55,7 +55,6 @@ public class ColoredSquaresModule : MonoBehaviour
     void Start()
     {
         Debug.Log("[ColoredSquares] Started.");
-        Module.OnActivate += ActivateModule;
 
         Lights = new GameObject[16];
         Colors = new SquareColor[16];
@@ -141,10 +140,6 @@ public class ColoredSquaresModule : MonoBehaviour
         Buttons[index].GetComponent<MeshRenderer>().material = Materials[(int) Colors[index]];
         Lights[index].GetComponent<Light>().color = LightColors[(int) Colors[index]];
         Lights[index].SetActive(true);
-    }
-
-    void ActivateModule()
-    {
     }
 
     void Pushed(int index)
