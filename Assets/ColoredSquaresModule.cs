@@ -25,7 +25,7 @@ public class ColoredSquaresModule : MonoBehaviour
 
     private GameObject[] Lights;
     private SquareColor[] Colors;
-    private Color[] LightColors = new[] { Color.white, Color.red, Color.blue, Color.green, Color.yellow, Color.magenta };
+    private Color[] LightColors = new[] { Color.white, Color.red, new Color(131f / 255, 131f / 255, 1f), Color.green, Color.yellow, Color.magenta };
 
     // false = Column; true = Row
     private static object[][] _table = newArray(
@@ -63,6 +63,7 @@ public class ColoredSquaresModule : MonoBehaviour
         {
             var j = i;
             Buttons[i].OnInteract += delegate { Pushed(j); return false; };
+            Buttons[i].GetComponent<MeshRenderer>().material = BlackMaterial;
             var lightObj = Lights[i] = new GameObject { name = "Light" };
             lightObj.transform.parent = Buttons[i].transform;
             lightObj.transform.localPosition = new Vector3(0, 0.08f, 0);
@@ -140,6 +141,18 @@ public class ColoredSquaresModule : MonoBehaviour
         Buttons[index].GetComponent<MeshRenderer>().material = Materials[(int) Colors[index]];
         Lights[index].GetComponent<Light>().color = LightColors[(int) Colors[index]];
         Lights[index].SetActive(true);
+    }
+
+    private void SetBlack(int index)
+    {
+        Buttons[index].GetComponent<MeshRenderer>().material = BlackMaterial;
+        Lights[index].SetActive(false);
+    }
+
+    private void SetAllBlack()
+    {
+        for (int i = 0; i < 16; i++)
+            SetBlack(i);
     }
 
     void Pushed(int index)
@@ -230,17 +243,5 @@ public class ColoredSquaresModule : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void SetAllBlack()
-    {
-        for (int i = 0; i < 16; i++)
-            SetBlack(i);
-    }
-
-    private void SetBlack(int i)
-    {
-        Buttons[i].GetComponent<MeshRenderer>().material = BlackMaterial;
-        Lights[i].SetActive(false);
     }
 }

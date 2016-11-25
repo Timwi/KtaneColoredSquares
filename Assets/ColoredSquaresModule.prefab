@@ -1499,7 +1499,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1528,7 +1528,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: 4f0a7099c384c844e9ae4633cbe53ca9, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1557,7 +1557,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: d223cb6025113374dbe12a97b9fb30ed, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1586,7 +1586,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: 0f03c261fb18ac84d8018f13944ada6c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1615,7 +1615,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1644,7 +1644,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: 98ede8a31f11d7347add76543eb7ee3c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1673,7 +1673,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1702,7 +1702,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1731,7 +1731,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1760,7 +1760,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1789,7 +1789,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1818,7 +1818,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: e6afc48f5e157e540b6bd5c4c5c64608, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1847,7 +1847,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1905,7 +1905,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -1934,7 +1934,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e1759b423eb44254fbcf31c5cf3b2957, type: 2}
+  - {fileID: 2100000, guid: eb1d563a941bc8a4da692167cef85e4f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
@@ -2199,7 +2199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000010126825154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2317,7 +2317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000010835500032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2404,7 +2404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000011429425880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2439,7 +2439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000011606241628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2452,7 +2452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000011754196696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2478,7 +2478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000011950879806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2491,7 +2491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000011969303310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2504,7 +2504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000011984707642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2552,7 +2552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000012510496984
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2591,7 +2591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000012556451586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2674,7 +2674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000013232233334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2687,7 +2687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000013242377120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2700,7 +2700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000013260740006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2713,7 +2713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000013320152064
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2739,7 +2739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000013631829344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2941,7 +2941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Legacy Shaders/Diffuse
+  - Legacy Shaders/Transparent/Diffuse
 --- !u!114 &114000014184704108
 MonoBehaviour:
   m_ObjectHideFlags: 1
