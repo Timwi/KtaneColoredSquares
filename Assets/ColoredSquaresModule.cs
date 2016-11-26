@@ -157,11 +157,11 @@ public class ColoredSquaresModule : MonoBehaviour
 
     void Pushed(int index)
     {
-        if (_expectedPresses == null)
-            return;
-
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Buttons[index].transform);
         Buttons[index].AddInteractionPunch();
+
+        if (_expectedPresses == null)
+            return;
 
         if (!_allowedPresses.Contains(index))
         {
