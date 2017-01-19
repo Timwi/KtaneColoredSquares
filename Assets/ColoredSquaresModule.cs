@@ -49,6 +49,7 @@ public class ColoredSquaresModule : MonoBehaviour
     private HashSet<int> _allowedPresses;
     private HashSet<int> _expectedPresses;
     private object _lastStage;
+    private SquareColor _firstStageColor;   // for Souvenir
 
     static T[] newArray<T>(params T[] array) { return array; }
 
@@ -96,6 +97,7 @@ public class ColoredSquaresModule : MonoBehaviour
         }
         while (counts.Count(c => c == minCount) > 1);
 
+        _firstStageColor = minCountColor;
         _lastStage = minCountColor;
         _expectedPresses = new HashSet<int>();
         _allowedPresses = new HashSet<int>();
@@ -106,6 +108,7 @@ public class ColoredSquaresModule : MonoBehaviour
                 _expectedPresses.Add(i);
             }
         StartCoroutine(SetSquareColors());
+        Debug.LogFormat("[ColoredSquares] First stage color is {0}; count={1}.", _firstStageColor, minCount);
     }
 
     private IEnumerator SetSquareColors()
