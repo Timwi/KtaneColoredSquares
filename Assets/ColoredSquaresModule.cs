@@ -198,7 +198,7 @@ public class ColoredSquaresModule : MonoBehaviour
 
                     // Move to next stage.
                     var nextStage = _table[whiteCount - 1][_lastStage is SquareColor ? (int) (SquareColor) _lastStage - 1 : _lastStage.Equals(true) ? 5 : 6];
-                    Debug.LogFormat("[ColoredSquares] Next stage is {0}.", nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString());
+                    Debug.LogFormat("[ColoredSquares] {0} lit: next stage is {1}.", whiteCount, nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString());
                     if (nextStage.Equals(true))
                     {
                         // Row
