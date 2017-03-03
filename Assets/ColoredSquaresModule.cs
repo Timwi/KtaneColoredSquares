@@ -51,11 +51,14 @@ public class ColoredSquaresModule : MonoBehaviour
     private object _lastStage;
     private SquareColor _firstStageColor;   // for Souvenir
 
+    private static int _moduleIdCounter = 1;
+    private int _moduleId;
+
     static T[] newArray<T>(params T[] array) { return array; }
 
     void Start()
     {
-        Debug.Log("[ColoredSquares] Started.");
+        _moduleId = _moduleIdCounter++;
 
         Lights = new GameObject[16];
         Colors = new SquareColor[16];
@@ -108,7 +111,7 @@ public class ColoredSquaresModule : MonoBehaviour
                 _expectedPresses.Add(i);
             }
         StartCoroutine(SetSquareColors());
-        Debug.LogFormat("[ColoredSquares] First stage color is {0}; count={1}.", _firstStageColor, minCount);
+        Debug.LogFormat("[ColoredSquares #{2}] First stage color is {0}; count={1}.", _firstStageColor, minCount, _moduleId);
     }
 
     private IEnumerator SetSquareColors()
@@ -168,7 +171,7 @@ public class ColoredSquaresModule : MonoBehaviour
 
         if (!_allowedPresses.Contains(index))
         {
-            Debug.LogFormat(@"[ColoredSquares] Button #{0} ({1}) was incorrect at this time.", index, Colors[index]);
+            Debug.LogFormat(@"[ColoredSquares #{2}] Button #{0} ({1}) was incorrect at this time.", index, Colors[index], _moduleId);
             Module.HandleStrike();
             SetAllBlack();
             SetInitialState();
@@ -198,7 +201,7 @@ public class ColoredSquaresModule : MonoBehaviour
 
                     // Move to next stage.
                     var nextStage = _table[whiteCount - 1][_lastStage is SquareColor ? (int) (SquareColor) _lastStage - 1 : _lastStage.Equals(true) ? 5 : 6];
-                    Debug.LogFormat("[ColoredSquares] {0} lit: next stage is {1}.", whiteCount, nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString());
+                    Debug.LogFormat("[ColoredSquares #{2}] {0} lit: next stage is {1}.", whiteCount, nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString(), _moduleId);
                     if (nextStage.Equals(true))
                     {
                         // Row
