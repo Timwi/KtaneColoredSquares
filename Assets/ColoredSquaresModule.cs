@@ -186,6 +186,7 @@ public class ColoredSquaresModule : MonoBehaviour
                 var whiteCount = Colors.Count(c => c == SquareColor.White);
                 if (whiteCount == 16)
                 {
+                    Debug.LogFormat(@"[ColoredSquares #{0}] Module passed.", _moduleId);
                     SetAllBlack();
                     _expectedPresses = null;
                     _allowedPresses = null;
