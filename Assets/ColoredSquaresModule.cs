@@ -251,4 +251,30 @@ public class ColoredSquaresModule : MonoBehaviour
             }
         }
     }
+
+    KMSelectable[] ProcessTwitchCommand(string command)
+    {
+        var colors = Enum.GetValues(typeof(SquareColor));
+        foreach (SquareColor col in colors)
+            if (command.Equals(col.ToString(), StringComparison.OrdinalIgnoreCase))
+                return Enumerable.Range(0, 16).Where(i => Colors[i] == col).Select(i => Buttons[i]).ToArray();
+
+        if (command.Equals("row", StringComparison.OrdinalIgnoreCase))
+        {
+            var applicableRow = Enumerable.Range(0, 5).First(row => row == 5 || Enumerable.Range(0, 4).Any(col => Colors[4 * row + col] == SquareColor.White));
+            if (applicableRow == 5)
+                return null;
+            return Enumerable.Range(0, 4).Where(col => Colors[4 * applicableRow + col] == SquareColor.White).Select(col => Buttons[4 * applicableRow + col]).ToArray();
+        }
+
+        if (command.Equals("col", StringComparison.OrdinalIgnoreCase) || command.Equals("column", StringComparison.OrdinalIgnoreCase))
+        {
+            var applicableCol = Enumerable.Range(0, 5).First(col => col == 5 || Enumerable.Range(0, 4).Any(row => Colors[4 * row + col] == SquareColor.White));
+            if (applicableCol == 5)
+                return null;
+            return Enumerable.Range(0, 4).Where(row => Colors[4 * row + applicableCol] == SquareColor.White).Select(row => Buttons[4 * row + applicableCol]).ToArray();
+        }
+
+        return null;
+    }
 }
