@@ -252,6 +252,10 @@ public class ColoredSquaresModule : MonoBehaviour
         }
     }
 
+#pragma warning disable 414
+    private string TwitchHelpMessage = @"Press the desired squares with “!{0} red”, “!{0} green”, “!{0} blue”, “!{0} yellow”, “!{0} magenta”, “!{0} row”, or “!{0} col”.";
+#pragma warning restore 414
+
     KMSelectable[] ProcessTwitchCommand(string command)
     {
         var colors = Enum.GetValues(typeof(SquareColor));
