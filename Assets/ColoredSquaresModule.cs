@@ -53,6 +53,7 @@ public class ColoredSquaresModule : MonoBehaviour
 
     private static int _moduleIdCounter = 1;
     private int _moduleId;
+    private Coroutine _activeCoroutine;
 
     static T[] newArray<T>(params T[] array) { return array; }
 
@@ -110,7 +111,7 @@ public class ColoredSquaresModule : MonoBehaviour
                 _allowedPresses.Add(i);
                 _expectedPresses.Add(i);
             }
-        StartCoroutine(SetSquareColors());
+        _activeCoroutine = StartCoroutine(SetSquareColors());
         Debug.LogFormat("[ColoredSquares #{2}] First stage color is {0}; count={1}.", _firstStageColor, minCount, _moduleId);
     }
 
@@ -123,6 +124,7 @@ public class ColoredSquaresModule : MonoBehaviour
             SetSquareColor(sequence[i]);
             yield return new WaitForSeconds(.03f);
         }
+        _activeCoroutine = null;
     }
 
     private static IList<T> shuffle<T>(IList<T> list)
@@ -173,6 +175,8 @@ public class ColoredSquaresModule : MonoBehaviour
         {
             Debug.LogFormat(@"[ColoredSquares #{2}] Button #{0} ({1}) was incorrect at this time.", index, Colors[index], _moduleId);
             Module.HandleStrike();
+            if (_activeCoroutine != null)
+                StopCoroutine(_activeCoroutine);
             SetAllBlack();
             SetInitialState();
         }
@@ -195,6 +199,8 @@ public class ColoredSquaresModule : MonoBehaviour
                 else
                 {
                     _allowedPresses.Clear();
+                    if (_activeCoroutine != null)
+                        StopCoroutine(_activeCoroutine);
 
                     var toBeRecolored = Enumerable.Range(0, 16).Where(i => Colors[i] != SquareColor.White).ToList();
                     foreach (var i in toBeRecolored)
@@ -246,7 +252,7 @@ public class ColoredSquaresModule : MonoBehaviour
                             }
                     }
                     _lastStage = nextStage;
-                    StartCoroutine(SetSquareColors());
+                    _activeCoroutine = StartCoroutine(SetSquareColors());
                 }
             }
         }
