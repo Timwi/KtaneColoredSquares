@@ -182,6 +182,25 @@ public class ColoredSquaresModule : MonoBehaviour
         }
         else
         {
+            switch (Colors[index])
+            {
+                case SquareColor.Red:
+                    Audio.PlaySoundAtTransform("redlight", Buttons[index].transform);
+                    break;
+                case SquareColor.Blue:
+                    Audio.PlaySoundAtTransform("bluelight", Buttons[index].transform);
+                    break;
+                case SquareColor.Green:
+                    Audio.PlaySoundAtTransform("greenlight", Buttons[index].transform);
+                    break;
+                case SquareColor.Yellow:
+                    Audio.PlaySoundAtTransform("yellowlight", Buttons[index].transform);
+                    break;
+                case SquareColor.Magenta:
+                    Audio.PlaySoundAtTransform("magentalight", Buttons[index].transform);
+                    break;
+            }
+
             _expectedPresses.Remove(index);
             Colors[index] = SquareColor.White;
             SetSquareColor(index);
