@@ -17,15 +17,18 @@ public class ColoredSquaresModule : MonoBehaviour
     public KMBombModule Module;
     public KMAudio Audio;
     public KMRuleSeedable RuleSeedable;
+    public KMColorblindMode ColorblindMode;
 
     public KMSelectable[] Buttons;
     public Material[] Materials;
+    public Material[] MaterialsCB;
     public Material BlackMaterial;
     public Light LightTemplate;
 
     private Light[] _lights;
     private SquareColor[] _colors;
-    private readonly Color[] _lightColors = new[] { Color.white, Color.red, new Color(131f / 255, 131f / 255, 1f), Color.green, Color.yellow, Color.magenta };
+    private bool _colorblind;
+    private static readonly Color[] _lightColors = new[] { Color.white, Color.red, new Color(131f / 255, 131f / 255, 1f), Color.green, Color.yellow, Color.magenta };
 
     // Contains the (seeded) rules
     private object[][] _table;
@@ -44,6 +47,7 @@ public class ColoredSquaresModule : MonoBehaviour
     void Start()
     {
         _moduleId = _moduleIdCounter++;
+        _colorblind = ColorblindMode.ColorblindModeActive;
 
         var rnd = RuleSeedable.GetRNG();
         if (rnd.Seed == 1)
@@ -128,13 +132,14 @@ public class ColoredSquaresModule : MonoBehaviour
                 _allowedPresses.Add(i);
                 _expectedPresses.Add(i);
             }
-        _activeCoroutine = StartCoroutine(SetSquareColors());
+        _activeCoroutine = StartCoroutine(SetSquareColors(delay: true));
         Debug.LogFormat("[ColoredSquares #{2}] First stage color is {0}; count={1}.", _firstStageColor, minCount, _moduleId);
     }
 
-    private IEnumerator SetSquareColors()
+    private IEnumerator SetSquareColors(bool delay)
     {
-        yield return new WaitForSeconds(1.75f);
+        if (delay)
+            yield return new WaitForSeconds(1.75f);
         var sequence = shuffle(Enumerable.Range(0, 16).Where(ix => _colors[ix] != SquareColor.White).ToList());
         for (int i = 0; i < sequence.Count; i++)
         {
@@ -163,7 +168,7 @@ public class ColoredSquaresModule : MonoBehaviour
 
     void SetSquareColor(int index)
     {
-        Buttons[index].GetComponent<MeshRenderer>().material = Materials[(int) _colors[index]];
+        Buttons[index].GetComponent<MeshRenderer>().material = _colorblind ? MaterialsCB[(int) _colors[index]] ?? Materials[(int) _colors[index]] : Materials[(int) _colors[index]];
         _lights[index].color = _lightColors[(int) _colors[index]];
         _lights[index].gameObject.SetActive(true);
     }
@@ -288,18 +293,25 @@ public class ColoredSquaresModule : MonoBehaviour
                             }
                     }
                     _lastStage = nextStage;
-                    _activeCoroutine = StartCoroutine(SetSquareColors());
+                    _activeCoroutine = StartCoroutine(SetSquareColors(delay: true));
                 }
             }
         }
     }
 
 #pragma warning disable 414
-    private string TwitchHelpMessage = @"Press the desired squares with “!{0} red”, “!{0} green”, “!{0} blue”, “!{0} yellow”, “!{0} magenta”, “!{0} row”, or “!{0} col”.";
+    private readonly string TwitchHelpMessage = @"!{0} red [Press all red squares] | !{0} row | !{0} col | !{0} colorblind";
 #pragma warning restore 414
 
     KMSelectable[] ProcessTwitchCommand(string command)
     {
+        if (command.Trim().Equals("colorblind", StringComparison.InvariantCultureIgnoreCase) && !_colorblind)
+        {
+            _colorblind = true;
+            StartCoroutine(SetSquareColors(delay: false));
+            return new KMSelectable[0];
+        }
+
         var colors = Enum.GetValues(typeof(SquareColor));
         foreach (SquareColor col in colors)
             if (command.Equals(col.ToString(), StringComparison.OrdinalIgnoreCase))
