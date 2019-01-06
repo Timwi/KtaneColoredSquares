@@ -50,6 +50,7 @@ public class ColoredSquaresModule : MonoBehaviour
         _colorblind = ColorblindMode.ColorblindModeActive;
 
         var rnd = RuleSeedable.GetRNG();
+        Debug.LogFormat("[ColoredSquares #{0}] Using rule seed: {1}", _moduleId, rnd.Seed);
         if (rnd.Seed == 1)
         {
             // false = Column; true = Row
