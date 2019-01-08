@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ColoredSquares;
-using UnityEngine;
 
 using Rnd = UnityEngine.Random;
 
@@ -11,24 +9,9 @@ using Rnd = UnityEngine.Random;
 /// On the Subject of Colored Squares
 /// Created by TheAuthorOfOZ, implemented by Timwi
 /// </summary>
-public class ColoredSquaresModule : MonoBehaviour
+public class ColoredSquaresModule : ColoredSquaresModuleBase
 {
-    public KMBombInfo Bomb;
-    public KMBombModule Module;
-    public KMAudio Audio;
-    public KMRuleSeedable RuleSeedable;
-    public KMColorblindMode ColorblindMode;
-
-    public KMSelectable[] Buttons;
-    public Material[] Materials;
-    public Material[] MaterialsCB;
-    public Material BlackMaterial;
-    public Light LightTemplate;
-
-    private Light[] _lights;
-    private SquareColor[] _colors;
-    private bool _colorblind;
-    private static readonly Color[] _lightColors = new[] { Color.white, Color.red, new Color(131f / 255, 131f / 255, 1f), Color.green, Color.yellow, Color.magenta };
+    public override string Name { get { return "Colored Squares"; } }
 
     // Contains the (seeded) rules
     private object[][] _table;
@@ -38,19 +21,12 @@ public class ColoredSquaresModule : MonoBehaviour
     private object _lastStage;
     private SquareColor _firstStageColor;   // for Souvenir
 
-    private static int _moduleIdCounter = 1;
-    private int _moduleId;
-    private Coroutine _activeCoroutine;
-
     static T[] newArray<T>(params T[] array) { return array; }
 
     void Start()
     {
-        _moduleId = _moduleIdCounter++;
-        _colorblind = ColorblindMode.ColorblindModeActive;
-
-        var rnd = RuleSeedable.GetRNG();
-        Debug.LogFormat("[ColoredSquares #{0}] Using rule seed: {1}", _moduleId, rnd.Seed);
+        var rnd = Scaffold.RuleSeedable.GetRNG();
+        Log("Using rule seed: {0}", rnd.Seed);
         if (rnd.Seed == 1)
         {
             // false = Column; true = Row
@@ -77,29 +53,8 @@ public class ColoredSquaresModule : MonoBehaviour
             var candidates = new object[] { SquareColor.Blue, false, SquareColor.Red, SquareColor.Yellow, true, SquareColor.Green, SquareColor.Magenta };
             _table = new object[15][];
             for (int i = 0; i < 14; i++)
-            {
-                candidates.Shuffle(rnd);
-                _table[i] = candidates.ToArray();
-            }
+                _table[i] = rnd.ShuffleFisherYates(candidates).ToArray();
             _table[14] = new object[] { false, true, false, true, false, true, false };
-        }
-
-        float scalar = transform.lossyScale.x;
-        _lights = new Light[16];
-        _colors = new SquareColor[16];
-
-        for (int i = 0; i < 16; i++)
-        {
-            var j = i;
-            Buttons[i].OnInteract += delegate { Pushed(j); return false; };
-            Buttons[i].GetComponent<MeshRenderer>().material = BlackMaterial;
-            var light = _lights[i] = (i == 0 ? LightTemplate : Instantiate(LightTemplate));
-            light.name = "Light" + (i + 1);
-            light.transform.parent = Buttons[i].transform;
-            light.transform.localPosition = new Vector3(0, 0.08f, 0);
-            light.transform.localScale = new Vector3(1, 1, 1);
-            light.gameObject.SetActive(false);
-            light.range = .1f * scalar;
         }
 
         SetInitialState();
@@ -107,21 +62,18 @@ public class ColoredSquaresModule : MonoBehaviour
 
     private void SetInitialState()
     {
-        int[] counts;
-        int minCount;
-        SquareColor minCountColor;
-        do
+        tryAgain:
+        var counts = new int[5];
+        for (int i = 0; i < 16; i++)
         {
-            counts = new int[5];
-            for (int i = 0; i < 16; i++)
-            {
-                _colors[i] = (SquareColor) Rnd.Range(1, 6);
-                counts[(int) _colors[i] - 1]++;
-            }
-            minCount = counts.Where(c => c > 0).Min();
-            minCountColor = (SquareColor) (Array.IndexOf(counts, minCount) + 1);
+            _colors[i] = (SquareColor) Rnd.Range(1, 6);
+            counts[(int) _colors[i] - 1]++;
         }
-        while (counts.Count(c => c == minCount) > 1);
+        var minCount = counts.Where(c => c > 0).Min();
+        var minCountColor = (SquareColor) (Array.IndexOf(counts, minCount) + 1);
+
+        if (counts.Count(c => c == minCount) > 1)
+            goto tryAgain;
 
         _firstStageColor = minCountColor;
         _lastStage = minCountColor;
@@ -133,124 +85,51 @@ public class ColoredSquaresModule : MonoBehaviour
                 _allowedPresses.Add(i);
                 _expectedPresses.Add(i);
             }
-        _activeCoroutine = StartCoroutine(SetSquareColors(delay: true));
-        Debug.LogFormat("[ColoredSquares #{2}] First stage color is {0}; count={1}.", _firstStageColor, minCount, _moduleId);
+        Scaffold.StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
+        Log("First stage color is {0}; count={1}.", _firstStageColor, minCount);
+        LogDebug("Colors: {0}", _colors.JoinString(", "));
     }
 
-    private IEnumerator SetSquareColors(bool delay)
+    protected override void ButtonPressed(int index)
     {
-        if (delay)
-            yield return new WaitForSeconds(1.75f);
-        var sequence = shuffle(Enumerable.Range(0, 16).Where(ix => _colors[ix] != SquareColor.White).ToList());
-        for (int i = 0; i < sequence.Count; i++)
-        {
-            SetSquareColor(sequence[i]);
-            yield return new WaitForSeconds(.03f);
-        }
-        _activeCoroutine = null;
-    }
-
-    private static IList<T> shuffle<T>(IList<T> list)
-    {
-        if (list == null)
-            throw new ArgumentNullException("list");
-        for (int j = list.Count; j >= 1; j--)
-        {
-            int item = Rnd.Range(0, j);
-            if (item < j - 1)
-            {
-                var t = list[item];
-                list[item] = list[j - 1];
-                list[j - 1] = t;
-            }
-        }
-        return list;
-    }
-
-    void SetSquareColor(int index)
-    {
-        Buttons[index].GetComponent<MeshRenderer>().material = _colorblind ? MaterialsCB[(int) _colors[index]] ?? Materials[(int) _colors[index]] : Materials[(int) _colors[index]];
-        _lights[index].color = _lightColors[(int) _colors[index]];
-        _lights[index].gameObject.SetActive(true);
-    }
-
-    private void SetBlack(int index)
-    {
-        Buttons[index].GetComponent<MeshRenderer>().material = BlackMaterial;
-        _lights[index].gameObject.SetActive(false);
-    }
-
-    private void SetAllBlack()
-    {
-        for (int i = 0; i < 16; i++)
-            SetBlack(i);
-    }
-
-    void Pushed(int index)
-    {
-        Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Buttons[index].transform);
-        Buttons[index].AddInteractionPunch();
-
         if (_expectedPresses == null)
             return;
 
         if (!_allowedPresses.Contains(index))
         {
-            Debug.LogFormat(@"[ColoredSquares #{2}] Button #{0} ({1}) was incorrect at this time.", index, _colors[index], _moduleId);
-            Module.HandleStrike();
-            if (_activeCoroutine != null)
-                StopCoroutine(_activeCoroutine);
-            SetAllBlack();
+            Log(@"Button #{0} ({1}) was incorrect at this time.", index, _colors[index]);
+            Strike();
             SetInitialState();
         }
         else
         {
-            switch (_colors[index])
-            {
-                case SquareColor.Red:
-                    Audio.PlaySoundAtTransform("redlight", Buttons[index].transform);
-                    break;
-                case SquareColor.Blue:
-                    Audio.PlaySoundAtTransform("bluelight", Buttons[index].transform);
-                    break;
-                case SquareColor.Green:
-                    Audio.PlaySoundAtTransform("greenlight", Buttons[index].transform);
-                    break;
-                case SquareColor.Yellow:
-                    Audio.PlaySoundAtTransform("yellowlight", Buttons[index].transform);
-                    break;
-                case SquareColor.Magenta:
-                    Audio.PlaySoundAtTransform("magentalight", Buttons[index].transform);
-                    break;
-            }
-
+            PlaySound(index);
             _expectedPresses.Remove(index);
             _colors[index] = SquareColor.White;
-            SetSquareColor(index);
+            Scaffold.SetButtonColor(index, SquareColor.White);
             if (_expectedPresses.Count == 0)
             {
                 var whiteCount = _colors.Count(c => c == SquareColor.White);
                 if (whiteCount == 16)
                 {
-                    Debug.LogFormat(@"[ColoredSquares #{0}] Module passed.", _moduleId);
-                    SetAllBlack();
                     _expectedPresses = null;
                     _allowedPresses = null;
-                    Module.HandlePass();
+                    ModulePassed();
                 }
                 else
                 {
                     _allowedPresses.Clear();
-                    if (_activeCoroutine != null)
-                        StopCoroutine(_activeCoroutine);
 
-                    var toBeRecolored = Enumerable.Range(0, 16).Where(i => _colors[i] != SquareColor.White).ToList();
-                    foreach (var i in toBeRecolored)
-                        SetBlack(i);
+                    var nonWhite = Enumerable.Range(0, 16).Where(i => _colors[i] != SquareColor.White).ToArray();
+                    foreach (var i in nonWhite)
+                    {
+                        Scaffold.SetButtonBlack(i);
+                        _colors[i] = (SquareColor) Rnd.Range(1, 6);
+                    }
 
                     // Move to next stage.
                     var nextStage = _table[whiteCount - 1][_lastStage is SquareColor ? (int) (SquareColor) _lastStage - 1 : _lastStage.Equals(true) ? 5 : 6];
-                    Debug.LogFormat("[ColoredSquares #{2}] {0} lit: next stage is {1}.", whiteCount, nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString(), _moduleId);
+                    Log("{0} lit: next stage is {1}.", whiteCount, nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString());
                     if (nextStage.Equals(true))
                     {
                         // Row
@@ -261,8 +140,6 @@ public class ColoredSquaresModule : MonoBehaviour
                                 _allowedPresses.Add(4 * firstRow + col);
                                 _expectedPresses.Add(4 * firstRow + col);
                             }
-                        foreach (var sq in toBeRecolored)
-                            _colors[sq] = (SquareColor) Rnd.Range(1, 6);
                     }
                     else if (nextStage.Equals(false))
                     {
@@ -274,18 +151,13 @@ public class ColoredSquaresModule : MonoBehaviour
                                 _allowedPresses.Add(4 * row + firstCol);
                                 _expectedPresses.Add(4 * row + firstCol);
                             }
-                        foreach (var sq in toBeRecolored)
-                            _colors[sq] = (SquareColor) Rnd.Range(1, 6);
                     }
                     else
                     {
                         // A specific color
+                        // Make sure at least one square has that color
                         var color = (SquareColor) nextStage;
-                        var ix = Rnd.Range(0, toBeRecolored.Count);
-                        _colors[toBeRecolored[ix]] = color;
-                        toBeRecolored.RemoveAt(ix);
-                        foreach (var sq in toBeRecolored)
-                            _colors[sq] = (SquareColor) Rnd.Range(1, 6);
+                        _colors[nonWhite[Rnd.Range(0, nonWhite.Length)]] = color;
                         for (int i = 0; i < 16; i++)
                             if (_colors[i] == color)
                             {
@@ -294,46 +166,42 @@ public class ColoredSquaresModule : MonoBehaviour
                             }
                     }
                     _lastStage = nextStage;
-                    _activeCoroutine = StartCoroutine(SetSquareColors(delay: true));
+                    Scaffold.StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
                 }
             }
         }
     }
 
-#pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} red [Press all red squares] | !{0} row | !{0} col | !{0} colorblind";
-#pragma warning restore 414
+    //#pragma warning disable 414
+    //    private readonly string TwitchHelpMessage = @"!{0} red [Press all red squares] | !{0} row | !{0} col | !{0} colorblind";
+    //#pragma warning restore 414
 
-    KMSelectable[] ProcessTwitchCommand(string command)
-    {
-        if (command.Trim().Equals("colorblind", StringComparison.InvariantCultureIgnoreCase) && !_colorblind)
-        {
-            _colorblind = true;
-            StartCoroutine(SetSquareColors(delay: false));
-            return new KMSelectable[0];
-        }
+    //    KMSelectable[] ProcessTwitchCommand(string command)
+    //    {
+    //        if (command.Trim().Equals("colorblind", StringComparison.InvariantCultureIgnoreCase) && !Scaffold.IsColorblind)
+    //            return Scaffold.SetColorblind(_colors);
 
-        var colors = Enum.GetValues(typeof(SquareColor));
-        foreach (SquareColor col in colors)
-            if (command.Equals(col.ToString(), StringComparison.OrdinalIgnoreCase))
-                return Enumerable.Range(0, 16).Where(i => _colors[i] == col).Select(i => Buttons[i]).ToArray();
+    //        var colors = Enum.GetValues(typeof(SquareColor));
+    //        foreach (SquareColor col in colors)
+    //            if (command.Equals(col.ToString(), StringComparison.OrdinalIgnoreCase))
+    //                return Enumerable.Range(0, 16).Where(i => _colors[i] == col).Select(i => Scaffold.Buttons[i]).ToArray();
 
-        if (command.Equals("row", StringComparison.OrdinalIgnoreCase))
-        {
-            var applicableRow = Enumerable.Range(0, 5).First(row => row == 4 || Enumerable.Range(0, 4).Any(col => _colors[4 * row + col] != SquareColor.White));
-            if (applicableRow == 4)
-                return null;
-            return Enumerable.Range(0, 4).Where(col => _colors[4 * applicableRow + col] != SquareColor.White).Select(col => Buttons[4 * applicableRow + col]).ToArray();
-        }
+    //        if (command.Equals("row", StringComparison.OrdinalIgnoreCase))
+    //        {
+    //            var applicableRow = Enumerable.Range(0, 5).First(row => row == 4 || Enumerable.Range(0, 4).Any(col => _colors[4 * row + col] != SquareColor.White));
+    //            return applicableRow == 4
+    //                ? null
+    //                : Enumerable.Range(0, 4).Where(col => _colors[4 * applicableRow + col] != SquareColor.White).Select(col => Scaffold.Buttons[4 * applicableRow + col]).ToArray();
+    //        }
 
-        if (command.Equals("col", StringComparison.OrdinalIgnoreCase) || command.Equals("column", StringComparison.OrdinalIgnoreCase))
-        {
-            var applicableCol = Enumerable.Range(0, 5).First(col => col == 4 || Enumerable.Range(0, 4).Any(row => _colors[4 * row + col] != SquareColor.White));
-            if (applicableCol == 4)
-                return null;
-            return Enumerable.Range(0, 4).Where(row => _colors[4 * row + applicableCol] != SquareColor.White).Select(row => Buttons[4 * row + applicableCol]).ToArray();
-        }
+    //        if (command.Equals("col", StringComparison.OrdinalIgnoreCase) || command.Equals("column", StringComparison.OrdinalIgnoreCase))
+    //        {
+    //            var applicableCol = Enumerable.Range(0, 5).First(col => col == 4 || Enumerable.Range(0, 4).Any(row => _colors[4 * row + col] != SquareColor.White));
+    //            return applicableCol == 4
+    //                ? null
+    //                : Enumerable.Range(0, 4).Where(row => _colors[4 * row + applicableCol] != SquareColor.White).Select(row => Scaffold.Buttons[4 * row + applicableCol]).ToArray();
+    //        }
 
-        return null;
-    }
+    //        return null;
+    //    }
 }
