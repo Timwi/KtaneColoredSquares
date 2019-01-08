@@ -246,6 +246,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
         if (_lastPress == -1 && _allowedPresses.Contains(index))
         {
+            PlaySound(index);
             _lastPress = index;
             _startingPosition = index;
             _allowedPresses = CalculateNewAllowedPresses(index);
