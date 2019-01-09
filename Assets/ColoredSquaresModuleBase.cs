@@ -15,13 +15,16 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
 
     public abstract string Name { get; }
 
-    private static int _moduleIdCounter = 1;
+    private static readonly Dictionary<string, int> _moduleIdCounters = new Dictionary<string, int>();
     private int _moduleId;
-    private bool _isSolved = false;
+    protected bool _isSolved = false;
 
     private void Awake()
     {
-        _moduleId = _moduleIdCounter++;
+        if (!_moduleIdCounters.ContainsKey(Name))
+            _moduleIdCounters[Name] = 1;
+
+        _moduleId = _moduleIdCounters[Name]++;
         _module = GetComponent<KMBombModule>();
 
         Scaffold = Instantiate(ScaffoldPrefab, transform);

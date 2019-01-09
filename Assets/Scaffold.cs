@@ -80,25 +80,25 @@ public sealed class Scaffold : MonoBehaviour
         SetAllButtonsBlack();
     }
 
-    public void StartSquareColorsCoroutine(SquareColor[] colors, SquaresToRecolor behaviour = SquaresToRecolor.All, bool delay = false)
+    public void StartSquareColorsCoroutine(SquareColor[] colors, SquaresToRecolor behaviour = SquaresToRecolor.All, bool delay = false, bool unshuffled = false)
     {
-        StartSquareColorsCoroutine(colors, delay: delay, indexes: behaviour == SquaresToRecolor.NonwhiteOnly
+        StartSquareColorsCoroutine(colors, delay: delay, unshuffled: unshuffled, indexes: behaviour == SquaresToRecolor.NonwhiteOnly
             ? Enumerable.Range(0, 16).Where(ix => colors[ix] != SquareColor.White).ToArray()
             : Enumerable.Range(0, 16).ToArray());
     }
 
-    public void StartSquareColorsCoroutine(SquareColor[] colors, int[] indexes, bool delay = false)
+    public void StartSquareColorsCoroutine(SquareColor[] colors, int[] indexes, bool delay = false, bool unshuffled = false)
     {
         if (_activeCoroutine != null)
             StopCoroutine(_activeCoroutine);
-        _activeCoroutine = StartCoroutine(SetSquareColorsCoroutine(delay, colors, indexes));
+        _activeCoroutine = StartCoroutine(SetSquareColorsCoroutine(delay, colors, indexes, unshuffled));
     }
 
-    private IEnumerator SetSquareColorsCoroutine(bool delay, SquareColor[] colors, int[] indexes)
+    private IEnumerator SetSquareColorsCoroutine(bool delay, SquareColor[] colors, int[] indexes, bool unshuffled)
     {
         if (delay)
             yield return new WaitForSeconds(Rnd.Range(1.5f, 2f));
-        foreach (var i in Enumerable.Range(0, 16).Where(ix => colors[ix] != SquareColor.White).ToList().Shuffle())
+        foreach (var i in unshuffled ? indexes : indexes.Shuffle())
         {
             SetButtonColor(i, colors[i]);
             yield return new WaitForSeconds(.03f);

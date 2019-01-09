@@ -13,8 +13,10 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
 {
     public override string Name { get { return "Uncolored Squares"; } }
 
+#pragma warning disable 414
     private SquareColor _firstStageColor1;   // for Souvenir
     private SquareColor _firstStageColor2;   // for Souvenir
+#pragma warning restore 414
 
     private readonly HashSet<int> _squaresPressedThisStage = new HashSet<int>();
     private List<List<int>> _permissiblePatterns;
