@@ -116,7 +116,7 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
         foreach (var piece in command.ToLowerInvariant().Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
         {
             if (piece.Length != 2 || piece[0] < 'a' || piece[0] > 'd' || piece[1] < '1' || piece[1] > '4')
-                yield return null;
+                yield break;
             buttons.Add(Scaffold.Buttons[(piece[0] - 'a') + 4 * (piece[1] - '1')]);
         }
 

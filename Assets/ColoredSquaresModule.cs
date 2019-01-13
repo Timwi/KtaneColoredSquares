@@ -86,7 +86,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
                 _expectedPresses.Add(i);
             }
         Scaffold.StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
-        Log("First stage color is {0}; count={1}.", _firstStageColor, minCount);
+        Log("First stage color is {0}. Count: {1}.", _firstStageColor, minCount);
         LogDebug("Colors: {0}", _colors.JoinString(", "));
     }
 
@@ -171,37 +171,4 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
             }
         }
     }
-
-    //#pragma warning disable 414
-    //    private readonly string TwitchHelpMessage = @"!{0} red [Press all red squares] | !{0} row | !{0} col | !{0} colorblind";
-    //#pragma warning restore 414
-
-    //    KMSelectable[] ProcessTwitchCommand(string command)
-    //    {
-    //        if (command.Trim().Equals("colorblind", StringComparison.InvariantCultureIgnoreCase) && !Scaffold.IsColorblind)
-    //            return Scaffold.SetColorblind(_colors);
-
-    //        var colors = Enum.GetValues(typeof(SquareColor));
-    //        foreach (SquareColor col in colors)
-    //            if (command.Equals(col.ToString(), StringComparison.OrdinalIgnoreCase))
-    //                return Enumerable.Range(0, 16).Where(i => _colors[i] == col).Select(i => Scaffold.Buttons[i]).ToArray();
-
-    //        if (command.Equals("row", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            var applicableRow = Enumerable.Range(0, 5).First(row => row == 4 || Enumerable.Range(0, 4).Any(col => _colors[4 * row + col] != SquareColor.White));
-    //            return applicableRow == 4
-    //                ? null
-    //                : Enumerable.Range(0, 4).Where(col => _colors[4 * applicableRow + col] != SquareColor.White).Select(col => Scaffold.Buttons[4 * applicableRow + col]).ToArray();
-    //        }
-
-    //        if (command.Equals("col", StringComparison.OrdinalIgnoreCase) || command.Equals("column", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            var applicableCol = Enumerable.Range(0, 5).First(col => col == 4 || Enumerable.Range(0, 4).Any(row => _colors[4 * row + col] != SquareColor.White));
-    //            return applicableCol == 4
-    //                ? null
-    //                : Enumerable.Range(0, 4).Where(row => _colors[4 * row + applicableCol] != SquareColor.White).Select(row => Scaffold.Buttons[4 * row + applicableCol]).ToArray();
-    //        }
-
-    //        return null;
-    //    }
 }
