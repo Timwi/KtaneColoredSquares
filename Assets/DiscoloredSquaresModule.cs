@@ -135,9 +135,9 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
         }
         Log("On to stage {0}.", _stage);
 
-        // Put 3–5 of the active color in that many random squares
+        // Put 2–3 of the active color in that many random squares
         var availableSquares = Enumerable.Range(0, 16).Where(ix => stage == 1 || _colors[ix] != SquareColor.White).ToList().Shuffle();
-        var take = Math.Min(Rnd.Range(3, 6), availableSquares.Count);
+        var take = Math.Min(stage == 1 ? 3 : Rnd.Range(2, 4), availableSquares.Count);
         for (int i = 0; i < take; i++)
             _colors[availableSquares[i]] = _rememberedColors[stage - 1];
 

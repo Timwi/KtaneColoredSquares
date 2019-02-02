@@ -50,7 +50,6 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
 
     private int _flowchartPosition;
     private int _modulePosition;
-    private int _expectedNextPress;
 
     void Start()
     {
@@ -168,8 +167,9 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
         var row = _flowchartStartRowFromColor[Array.IndexOf(_usefulColors, _colors[_squareForFlowchartStartRow])];
         _flowchartPosition = col + 6 * row;
         _modulePosition = new[] { 0, 3, 12, 15 }[_direction % 4];
+        _updateColors.Clear();
 
-        Log("Starting position in the flowchart: {0}", convertCoord(_flowchartPosition, 6));
+        Log("{0}={1}, {2}={3} ⇒ Starting position in the flowchart: {4}", convertCoord(_squareForFlowchartStartColumn, 4), _colors[_squareForFlowchartStartColumn], convertCoord(_squareForFlowchartStartRow, 4), _colors[_squareForFlowchartStartRow], convertCoord(_flowchartPosition, 6));
         Log("Order of processing on the module: {0}", _directionNames[_direction]);
         ProcessCurrentSquare();
     }
@@ -178,11 +178,9 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
     {
         while (true)
         {
-            reevaluate:
             if (_flowchart[_flowchartPosition].Contains(_colors[_modulePosition]))
             {
                 _flowchartPosition = _pointsAtY[_flowchartPosition];
-                _expectedNextPress = _modulePosition;
                 Log("{0} color is {1}, which is in the flowchart cell, so I expect you to press it. Flowchart position now {2}.", convertCoord(_modulePosition, 4), _colors[_modulePosition], convertCoord(_flowchartPosition, 6));
                 return;
             }
@@ -200,7 +198,7 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
                     }
                     _colors[_modulePosition] = possibleLastColors[Rnd.Range(0, possibleLastColors.Length)];
                     Scaffold.SetButtonColor(_modulePosition, _colors[_modulePosition]);
-                    goto reevaluate;
+                    continue;
                 }
                 _flowchartPosition = _pointsAtN[_flowchartPosition];
                 Log("{0} color is {1}, which is NOT in the flowchart cell. Moving on to {2}. Flowchart position now {3}.", convertCoord(_modulePosition, 4), _colors[_modulePosition], convertCoord(next.Value, 4), convertCoord(_flowchartPosition, 6));
@@ -235,9 +233,9 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
 
     protected override void ButtonPressed(int index)
     {
-        if (index != _expectedNextPress)
+        if (index != _modulePosition)
         {
-            Log("{0} was pressed when {1} was expected. Strike and reset.", convertCoord(index, 4), convertCoord(_expectedNextPress, 4));
+            Log("{0} was pressed when {1} was expected. Strike and reset.", convertCoord(index, 4), convertCoord(_modulePosition, 4));
             Strike();
             SetInitialState();
         }
@@ -248,21 +246,34 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
         else
         {
             Log("{0} pressed correctly.", convertCoord(index, 4));
-            var oldColor = _colors[_modulePosition];
-            foreach (var ix in _updateColors)
-                _colors[ix] = SquareColor.White;
+
+            // We know this isn’t null because of the above if
+            _modulePosition = NextSquare(_modulePosition).Value;
+
+            // Make everything white _including_ the square that was pressed
+            var indexes = _updateColors.Select(i => (int?) i).ToList();
+            indexes.Add(index);
+            foreach (var ix in indexes)
+                _colors[ix.Value] = SquareColor.White;
+            indexes.Add(null);
+
+            var indexes2 = new List<int?>();
             for (int? i = _modulePosition; i != null; i = NextSquare(i.Value))
             {
                 Scaffold.SetButtonBlack(i.Value);
-                var chooseFrom = i == _modulePosition ? _usefulColors.Except(new[] { oldColor }).ToArray() : _usefulColors;
-                _colors[i.Value] = chooseFrom[Rnd.Range(0, chooseFrom.Length)];
-                _updateColors.Add(i.Value);
+                _colors[i.Value] = _usefulColors[Rnd.Range(0, _usefulColors.Length)];
+                indexes2.Add(i.Value);
             }
-            var sq = _updateColors.ToArray();
+
             _updateColors.Clear();
             ProcessCurrentSquare();
+
             if (!_isSolved)
-                Scaffold.StartSquareColorsCoroutine(_colors, sq, unshuffled: true);
+            {
+                indexes2.Shuffle();
+                indexes.AddRange(indexes2);
+                Scaffold.StartSquareColorsCoroutine(_colors, indexes.ToArray());
+            }
         }
     }
 }

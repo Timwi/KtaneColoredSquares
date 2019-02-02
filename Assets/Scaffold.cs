@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using ColoredSquares;
 using UnityEngine;
@@ -82,26 +83,39 @@ public sealed class Scaffold : MonoBehaviour
 
     public void StartSquareColorsCoroutine(SquareColor[] colors, SquaresToRecolor behaviour = SquaresToRecolor.All, bool delay = false, bool unshuffled = false)
     {
-        StartSquareColorsCoroutine(colors, delay: delay, unshuffled: unshuffled, indexes: behaviour == SquaresToRecolor.NonwhiteOnly
-            ? Enumerable.Range(0, 16).Where(ix => colors[ix] != SquareColor.White).ToArray()
-            : Enumerable.Range(0, 16).ToArray());
+        var indexes = new List<int?>((behaviour == SquaresToRecolor.NonwhiteOnly
+            ? Enumerable.Range(0, 16).Where(ix => colors[ix] != SquareColor.White)
+            : Enumerable.Range(0, 16)).Select(i => (int?) i));
+        if (!unshuffled)
+            indexes.Shuffle();
+        if (delay)
+            indexes.Insert(0, null);
+        StartSquareColorsCoroutine(colors, indexes.ToArray());
     }
 
-    public void StartSquareColorsCoroutine(SquareColor[] colors, int[] indexes, bool delay = false, bool unshuffled = false)
+    /// <summary>
+    /// Starts a coroutine that re-colors some of the squares.
+    /// </summary>
+    /// <param name="colors">The colors to set the relevant squares to.</param>
+    /// <param name="indexes">Specifies which squares to recolor and in which order. Insert a <c>null</c> value to add a delay.</param>
+    public void StartSquareColorsCoroutine(SquareColor[] colors, int?[] indexes)
     {
         if (_activeCoroutine != null)
             StopCoroutine(_activeCoroutine);
-        _activeCoroutine = StartCoroutine(SetSquareColorsCoroutine(delay, colors, indexes, unshuffled));
+        _activeCoroutine = StartCoroutine(SetSquareColorsCoroutine(colors, indexes));
     }
 
-    private IEnumerator SetSquareColorsCoroutine(bool delay, SquareColor[] colors, int[] indexes, bool unshuffled)
+    private IEnumerator SetSquareColorsCoroutine(SquareColor[] colors, int?[] indexes)
     {
-        if (delay)
-            yield return new WaitForSeconds(Rnd.Range(1.5f, 2f));
-        foreach (var i in unshuffled ? indexes : indexes.Shuffle())
+        foreach (var i in indexes)
         {
-            SetButtonColor(i, colors[i]);
-            yield return new WaitForSeconds(.03f);
+            if (i == null)
+                yield return new WaitForSeconds(Rnd.Range(1.5f, 2f));
+            else
+            {
+                SetButtonColor(i.Value, colors[i.Value]);
+                yield return new WaitForSeconds(.03f);
+            }
         }
         _activeCoroutine = null;
     }
