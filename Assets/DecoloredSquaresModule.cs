@@ -51,6 +51,10 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
     private int _flowchartPosition;
     private int _modulePosition;
 
+    // for Souvenir
+    private String _color1;
+    private String _color2;
+
     void Start()
     {
         var rnd = Scaffold.RuleSeedable.GetRNG();
@@ -169,7 +173,10 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
         _modulePosition = new[] { 0, 3, 12, 15 }[_direction % 4];
         _updateColors.Clear();
 
-        Log("{0}={1}, {2}={3} ⇒ Starting position in the flowchart: {4}", convertCoord(_squareForFlowchartStartColumn, 4), _colors[_squareForFlowchartStartColumn], convertCoord(_squareForFlowchartStartRow, 4), _colors[_squareForFlowchartStartRow], convertCoord(_flowchartPosition, 6));
+        _color1 = _colors[_squareForFlowchartStartColumn].ToString();
+        _color2 = _colors[_squareForFlowchartStartRow].ToString();
+
+        Log("{0}={1}, {2}={3} ⇒ Starting position in the flowchart: {4}", convertCoord(_squareForFlowchartStartColumn, 4), _color1, convertCoord(_squareForFlowchartStartRow, 4), _color2, convertCoord(_flowchartPosition, 6));
         Log("Order of processing on the module: {0}", _directionNames[_direction]);
         ProcessCurrentSquare();
     }
