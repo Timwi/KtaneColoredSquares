@@ -8,8 +8,8 @@ using UnityEngine;
 using Rnd = UnityEngine.Random;
 
 /// <summary>
-/// On the Subject of Colored Squares
-/// Created and implemented by ZekNikZ upon the foundation of ColoredSquares by Timwi
+/// On the Subject of Varicolored Squares
+/// Created and implemented by ZekNikZ upon the foundation of Colored Squares by Timwi
 /// </summary>
 public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 {
@@ -24,7 +24,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
     private HashSet<int> _allowedPresses;
     private HashSet<int> _updateIndices;
-    private SquareColor _currentColor;
+    private SquareColor _lastPressedColor;
     private SquareColor _nextColor;
     private int _startingPosition;
     private SquareColor _firstStageColor; // for Souvenir
@@ -53,7 +53,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
         _colors.Shuffle();
 
         _allowedPresses = new HashSet<int>();
-        _currentColor = _firstStageColor;
+        _lastPressedColor = _firstStageColor;
         _startingPosition = -1;
         _lastPress = -1;
 
@@ -221,14 +221,14 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
         // Populate result (potentially find a backup color)
         while (true)
         {
-            if (_nextColor != _currentColor)
+            if (_nextColor != _lastPressedColor)
                 for (int i = 0; i < 16; i++)
                     if (_colors[i] == _nextColor)
                         result.Add(i);
 
             if (result.Count != 0)
             {
-                LogDebug("Adjacent colors: {0}; pentagon: {1}; result: {2}", adjacentColors.Select(c => c.ToString()[0]).JoinString(), pentagon.Select(c => c.ToString()[0]).JoinString(), _nextColor);
+                Log("Button #{0} correct. Last pressed: {1}. Flashing color: {2}. Adjacent: {3}. Next color is {4}.", index, _lastPressedColor, _colors[index], adjacentColors.Select(c => c.ToString()[0]).JoinString(), _nextColor);
                 return result;
             }
 
@@ -250,8 +250,6 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
             _lastPress = index;
             _startingPosition = index;
             _allowedPresses = CalculateNewAllowedPresses(index);
-
-            Log("Button #{0} pressed successfully. Current color is now {1}. Next color is {2}.", index, _currentColor, _nextColor);
             _activeCoroutine = StartCoroutine(BlinkLastSquare());
         }
         else if (!_allowedPresses.Contains(index))
@@ -266,8 +264,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
             _lastPress = index;
 
             _updateIndices = new HashSet<int>();
-            LogDebug("Calling SpreadColor({0}, {1}, {2})", _currentColor, _colors[index], _startingPosition);
-            SpreadColor(_currentColor, _colors[index], _startingPosition);
+            SpreadColor(_lastPressedColor, _colors[index], _startingPosition);
             if (_updateIndices.SetEquals(_lastArea))
             {
                 _pressesWithoutChange++;
@@ -278,7 +275,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
                 _pressesWithoutChange = 0;
             }
 
-            _currentColor = _colors[index];
+            _lastPressedColor = _colors[index];
 
             if (_pressesWithoutChange >= 3)
             {
@@ -292,15 +289,12 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
             if (_colors.All(c => c == _colors[0]))
             {
-                Log("Module passed.");
                 _allowedPresses = null;
                 _activeCoroutine = StartCoroutine(SetSquareColors(delay: false, solve: true));
             }
             else
             {
                 _allowedPresses = CalculateNewAllowedPresses(index);
-
-                Log("Button #{0} pressed successfully. Current color is now {1}. Next color is {2}.", index, _currentColor, _nextColor);
                 _activeCoroutine = StartCoroutine(SetSquareColors(delay: false));
             }
         }
