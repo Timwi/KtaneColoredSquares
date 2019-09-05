@@ -241,10 +241,12 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
         }
         else if (NextSquare(_modulePosition) == null)
         {
+            PlaySound(index);
             ModulePassed();
         }
         else
         {
+            PlaySound(index);
             Log("{0} pressed correctly.", convertCoord(index, 4));
 
             // We know this isn’t null because of the above if
