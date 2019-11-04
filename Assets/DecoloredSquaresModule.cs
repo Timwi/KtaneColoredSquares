@@ -204,7 +204,6 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
                         return;
                     }
                     _colors[_modulePosition] = possibleLastColors[Rnd.Range(0, possibleLastColors.Length)];
-                    Scaffold.SetButtonColor(_modulePosition, _colors[_modulePosition]);
                     continue;
                 }
                 _flowchartPosition = _pointsAtN[_flowchartPosition];
