@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ColoredSquares;
-
+using UnityEngine;
 using Rnd = UnityEngine.Random;
 
 /// <summary>
@@ -169,6 +170,18 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
                     Scaffold.StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
                 }
             }
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (!_isSolved)
+        {
+            Scaffold.Buttons[_expectedPresses.First()].OnInteract();
+            yield return new WaitForSeconds(.1f);
+
+            while (Scaffold.IsCoroutineActive)
+                yield return true;
         }
     }
 }

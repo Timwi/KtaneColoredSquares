@@ -24,6 +24,7 @@ public sealed class Scaffold : MonoBehaviour
     private static readonly Color[] _lightColors = new[] { Color.white, Color.red, new Color(131f / 255, 131f / 255, 1f), Color.green, Color.yellow, Color.magenta };
 
     public bool IsColorblind { get; private set; }
+    public bool IsCoroutineActive { get { return _activeCoroutine != null; } }
 
     private void Awake()
     {

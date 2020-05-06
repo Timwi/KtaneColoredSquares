@@ -11,7 +11,7 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
 
     private KMBombModule _module;
 
-    internal SquareColor[] _colors = new SquareColor[16];
+    protected SquareColor[] _colors = new SquareColor[16];
 
     public abstract string Name { get; }
 
