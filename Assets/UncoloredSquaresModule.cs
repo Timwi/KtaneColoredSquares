@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ColoredSquares;
-
+using UnityEngine;
 using Rnd = UnityEngine.Random;
 
 /// <summary>
@@ -216,6 +217,21 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
 
             if (_permissiblePatterns.Count == 1 && _squaresPressedThisStage.Count == _permissiblePatterns[0].Count)
                 SetStage(isStart: false);
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (!_isSolved)
+        {
+            var pattern = _permissiblePatterns[0];
+            foreach (var index in pattern)
+            {
+                Scaffold.Buttons[index].OnInteract();
+                yield return new WaitForSeconds(.1f);
+            }
+            while (Scaffold.IsCoroutineActive)
+                yield return true;
         }
     }
 }
