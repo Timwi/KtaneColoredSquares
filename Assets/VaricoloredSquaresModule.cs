@@ -32,6 +32,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
     private HashSet<int> _lastArea = new HashSet<int>();
     private int _pressesWithoutChange = 0;
     private Coroutine _activeCoroutine;
+    private int _animating = 0;
 
     void Start()
     {
@@ -68,6 +69,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
     private IEnumerator SetSquareColors(bool delay, bool solve = false)
     {
+        _animating++;
         if (delay)
             yield return new WaitForSeconds(Rnd.Range(1.5f, 2f));
 
@@ -87,6 +89,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
             _activeCoroutine = StartCoroutine(BlinkLastSquare());
 
         _updateIndices = null;
+        _animating--;
     }
 
     private IEnumerator BlinkLastSquare()
@@ -297,6 +300,22 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
                 _allowedPresses = CalculateNewAllowedPresses(index);
                 _activeCoroutine = StartCoroutine(SetSquareColors(delay: false));
             }
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (Scaffold.IsCoroutineActive || _animating > 0)
+            yield return true;
+
+        while (!_isSolved)
+        {
+            Scaffold.Buttons[_allowedPresses.PickRandom()].OnInteract();
+            yield return new WaitForSeconds(.1f);
+
+            while (Scaffold.IsCoroutineActive || _animating > 0)
+                yield return true;
+            yield return new WaitForSeconds(.25f);
         }
     }
 }

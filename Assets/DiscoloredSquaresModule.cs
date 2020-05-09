@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ColoredSquares;
-
+using UnityEngine;
 using Rnd = UnityEngine.Random;
 
 /// <summary>
@@ -195,5 +196,31 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
             default: break;
         }
         return (x % 4) + 4 * (y % 4);
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (Scaffold.IsCoroutineActive)
+            yield return true;
+
+        // Press the four “live” colors in the preliminary stage
+        for (var i = 0; i < 16 && _stage == 0; i++)
+            if (_colors[i] != SquareColor.White && _colors[i] != _neutralColor)
+            {
+                Scaffold.Buttons[i].OnInteract();
+                yield return new WaitForSeconds(.1f);
+            }
+
+        while (Scaffold.IsCoroutineActive)
+            yield return true;
+
+        while (!_isSolved)
+        {
+            Scaffold.Buttons[_expectedPresses[_subprogress]].OnInteract();
+            yield return new WaitForSeconds(.1f);
+
+            while (Scaffold.IsCoroutineActive)
+                yield return true;
+        }
     }
 }

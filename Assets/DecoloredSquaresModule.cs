@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ColoredSquares;
-
+using UnityEngine;
 using Rnd = UnityEngine.Random;
 
 /// <summary>
@@ -282,6 +283,21 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
                 indexes.AddRange(indexes2);
                 Scaffold.StartSquareColorsCoroutine(_colors, indexes.ToArray());
             }
+        }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (Scaffold.IsCoroutineActive)
+            yield return true;
+
+        while (!_isSolved)
+        {
+            Scaffold.Buttons[_modulePosition].OnInteract();
+            yield return new WaitForSeconds(.1f);
+
+            while (Scaffold.IsCoroutineActive)
+                yield return true;
         }
     }
 }
