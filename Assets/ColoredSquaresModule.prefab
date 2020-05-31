@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114573422838844020}
   - component: {fileID: 114561896484377868}
   - component: {fileID: 114798236077021774}
+  - component: {fileID: 114514275299212850}
   m_Layer: 0
   m_Name: ColoredSquaresModule
   m_TagString: Untagged
@@ -93,6 +94,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighlightScale: {x: 1, y: 1, z: 1}
   OutlineAmount: 0
+--- !u!114 &114514275299212850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1289918692221666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cfb889a07d5fd4e9baed7960bb397f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colorblindMode: 0
 --- !u!114 &114561896484377868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,4 +171,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScaffoldPrefab: {fileID: 114426324360029242, guid: a50ab77ded3129d4ebbf52f994208eae,
     type: 2}
-  Module: {fileID: 114561896484377868}
+  ColorblindMode: {fileID: 114514275299212850}

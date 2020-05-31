@@ -10,7 +10,6 @@ public sealed class Scaffold : MonoBehaviour
 {
     public KMBombInfo Bomb;
     public KMAudio Audio;
-    public KMColorblindMode ColorblindMode;
     public KMRuleSeedable RuleSeedable;
 
     public KMSelectable[] Buttons;
@@ -31,15 +30,15 @@ public sealed class Scaffold : MonoBehaviour
         _buttonRenderers = Buttons.Select(b => b.GetComponent<MeshRenderer>()).ToArray();
     }
 
-    private void Start()
-    {
-        IsColorblind = ColorblindMode.ColorblindModeActive;
-    }
-
     public void FixLightSizes(float scalar)
     {
         for (int i = 0; i < 16; i++)
             Lights[i].range = .1f * scalar;
+    }
+
+    public void SetColorblind(KMColorblindMode cb)
+    {
+        IsColorblind = cb.ColorblindModeActive;
     }
 
     public void SetColorblind(SquareColor[] colors)

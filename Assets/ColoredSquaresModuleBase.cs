@@ -8,6 +8,7 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
 {
     public Scaffold ScaffoldPrefab;
     protected Scaffold Scaffold;
+    public KMColorblindMode ColorblindMode;
 
     private KMBombModule _module;
 
@@ -28,6 +29,7 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
         _module = GetComponent<KMBombModule>();
 
         Scaffold = Instantiate(ScaffoldPrefab, transform);
+        Scaffold.SetColorblind(ColorblindMode);
         var moduleSelectable = GetComponent<KMSelectable>();
         foreach (var btn in Scaffold.Buttons)
             btn.Parent = moduleSelectable;
