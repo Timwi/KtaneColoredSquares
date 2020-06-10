@@ -21,6 +21,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
     private HashSet<int> _expectedPresses;
     private object _lastStage;
     private SquareColor _firstStageColor;   // for Souvenir
+    private static readonly SquareColor[] _colorsInUse = new[] { SquareColor.Red, SquareColor.Blue, SquareColor.Green, SquareColor.Yellow, SquareColor.Magenta };
 
     static T[] newArray<T>(params T[] array) { return array; }
 
@@ -64,17 +65,19 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
     private void SetInitialState()
     {
         tryAgain:
-        var counts = new int[5];
+        var counts = new Dictionary<SquareColor, int>();
+        foreach (var c in _colorsInUse)
+            counts[c] = 0;
         for (int i = 0; i < 16; i++)
         {
-            _colors[i] = (SquareColor) Rnd.Range(1, 6);
-            counts[(int) _colors[i] - 1]++;
+            _colors[i] = _colorsInUse.PickRandom();
+            counts[_colors[i]]++;
         }
-        var minCount = counts.Where(c => c > 0).Min();
-        var minCountColor = (SquareColor) (Array.IndexOf(counts, minCount) + 1);
-
-        if (counts.Count(c => c == minCount) > 1)
+        var minCount = _colorsInUse.Min(c => counts[c]);
+        if (counts.Count(kvp => kvp.Value == minCount) > 1)
             goto tryAgain;
+
+        var minCountColor = _colorsInUse.First(c => counts[c] == minCount);
 
         _firstStageColor = minCountColor;
         _lastStage = minCountColor;
@@ -125,11 +128,12 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
                     foreach (var i in nonWhite)
                     {
                         SetButtonBlack(i);
-                        _colors[i] = (SquareColor) Rnd.Range(1, 6);
+                        _colors[i] = _colorsInUse.PickRandom();
                     }
 
                     // Move to next stage.
-                    var nextStage = _table[whiteCount - 1][_lastStage is SquareColor ? (int) (SquareColor) _lastStage - 1 : _lastStage.Equals(true) ? 5 : 6];
+                    var columnIx = _lastStage.Equals(true) ? 5 : _lastStage.Equals(false) ? 6 : Array.IndexOf(_colorsInUse, (SquareColor) _lastStage);
+                    var nextStage = _table[whiteCount - 1][columnIx];
                     Log("{0} lit: next stage is {1}.", whiteCount, nextStage.Equals(true) ? "Row" : nextStage.Equals(false) ? "Column" : ((SquareColor) nextStage).ToString());
                     if (nextStage.Equals(true))
                     {
