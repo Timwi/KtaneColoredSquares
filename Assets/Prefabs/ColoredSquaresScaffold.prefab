@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 114407963091204572}
   - component: {fileID: 114757733555508294}
   m_Layer: 0
-  m_Name: Scaffold
+  m_Name: ColoredSquaresScaffold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3484,7 +3484,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 127088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bffe2553ef60fa4f843e16ad78eb0d3, type: 3}
+  m_Script: {fileID: 11500000, guid: de5508114db25444584266485bb60031, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bomb: {fileID: 114116835672477950}
@@ -3515,6 +3515,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: e6afc48f5e157e540b6bd5c4c5c64608, type: 2}
   - {fileID: 2100000, guid: 4f0a7099c384c844e9ae4633cbe53ca9, type: 2}
   - {fileID: 2100000, guid: 98ede8a31f11d7347add76543eb7ee3c, type: 2}
+  - {fileID: 2100000, guid: 377e54f5d3fad0c47bfcb0561e7c65e1, type: 2}
   - {fileID: 2100000, guid: c73d43d80621e9c498cf5819d924613f, type: 2}
   - {fileID: 2100000, guid: 2e4f76af1dd1dfc49ba4ee056ddef35d, type: 2}
   - {fileID: 2100000, guid: 740721cceddfc044ab91702cd44b8942, type: 2}
@@ -3533,6 +3534,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ca84c3eb1485b554da64a057a1893aa8, type: 2}
   - {fileID: 2100000, guid: a1feac709af69e8468fab64f93315c3e, type: 2}
   - {fileID: 2100000, guid: c78423891f60cd14ab8c45e27e2af242, type: 2}
+  - {fileID: 2100000, guid: 156d66a9c6f440b40b2efc53ea629431, type: 2}
   - {fileID: 2100000, guid: 013701cab3fccfb4e9471e529b9900f7, type: 2}
   - {fileID: 2100000, guid: 65b3892bdc911fc4d81e461107229b4b, type: 2}
   - {fileID: 2100000, guid: 7a8929f5d200c5e40895e5c1b6b9e36f, type: 2}

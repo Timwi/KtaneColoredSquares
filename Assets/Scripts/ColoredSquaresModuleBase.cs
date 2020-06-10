@@ -6,8 +6,8 @@ using UnityEngine;
 
 public abstract class ColoredSquaresModuleBase : MonoBehaviour
 {
-    public Scaffold ScaffoldPrefab;
-    protected Scaffold Scaffold;
+    public ColoredSquaresScaffold ScaffoldPrefab;
+    protected ColoredSquaresScaffold Scaffold;
     public KMColorblindMode ColorblindMode;
 
     private KMBombModule _module;

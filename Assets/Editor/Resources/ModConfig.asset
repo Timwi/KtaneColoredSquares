@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: ColoredSquares
   title: Colored Squares
+  author: 
   description: "There is order in chaos. A pattern in the colors. Find it, and all
     will become clear.\r\n\r\n[b]Colored Squares[/b] \u2022 [url=http://ktane.timwi.de/PDF/Colored%20Squares.pdf]PDF[/url]
     \u2022 [url=http://ktane.timwi.de/HTML/Colored%20Squares.html]HTML[/url] \u2022
@@ -21,7 +22,9 @@ MonoBehaviour:
     \u2022 [url=http://ktane.timwi.de/HTML/Decolored%20Squares.html]HTML[/url] \u2022
     created by Timwi.\r\n[b]Discolored Squares[/b] \u2022 [url=http://ktane.timwi.de/PDF/Discolored%20Squares.pdf]PDF[/url]
     \u2022 [url=http://ktane.timwi.de/HTML/Discolored%20Squares.html]HTML[/url] \u2022
-    created by Timwi.\r\n[b]Uncolored Squares[/b] \u2022 [url=http://ktane.timwi.de/PDF/Uncolored%20Squares.pdf]PDF[/url]
+    created by Timwi.\r\n[b]Juxtacolored Squares[/b] \u2022 [url=http://ktane.timwi.de/PDF/Juxtacolored%20Squares.pdf]PDF[/url]
+    \u2022 [url=http://ktane.timwi.de/HTML/Juxtacolored%20Squares.html]HTML[/url]
+    \u2022 created by Asew, Goofy and Timwi.\r\n[b]Uncolored Squares[/b] \u2022 [url=http://ktane.timwi.de/PDF/Uncolored%20Squares.pdf]PDF[/url]
     \u2022 [url=http://ktane.timwi.de/HTML/Uncolored%20Squares.html]HTML[/url] \u2022
     created by Timwi.\r\n[b]Varicolored Squares[/b] \u2022 [url=http://ktane.timwi.de/PDF/Varicolored%20Squares.pdf]PDF[/url]
     \u2022 [url=http://ktane.timwi.de/HTML/Varicolored%20Squares.html]HTML[/url] \u2022

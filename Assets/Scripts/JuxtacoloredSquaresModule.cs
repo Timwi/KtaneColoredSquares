@@ -28,7 +28,7 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
 
     // This order must match the order in the rule-seeded code in the manual
     private static readonly SquareColor[] _allColors = new[] {
-        SquareColor.Azure, SquareColor.Black, SquareColor.Blue, SquareColor.Brown,
+        SquareColor.Azure, SquareColor.Black, SquareColor.DarkBlue, SquareColor.Brown,
         SquareColor.Chestnut, SquareColor.Cyan, SquareColor.Forest, SquareColor.Green,
         SquareColor.Gray, SquareColor.Jade, SquareColor.Magenta, SquareColor.Mauve,
         SquareColor.Orange, SquareColor.Purple, SquareColor.Red, SquareColor.Yellow };
