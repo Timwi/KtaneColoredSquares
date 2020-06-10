@@ -58,7 +58,7 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
 
     void Start()
     {
-        var rnd = Scaffold.RuleSeedable.GetRNG();
+        var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);
 
         var skip = rnd.Next(0, 50);
@@ -165,7 +165,7 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
         for (int i = 0; i < 16; i++)
             _colors[i] = i < 6 ? colors[i / 2] : colors[(i - 6) / 5 + 3];
         _colors.Shuffle();
-        Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
+        StartSquareColorsCoroutine(_colors, delay: true);
 
         // Determine starting position in the flowchart.
         var col = _flowchartStartColumnFromColor[Array.IndexOf(_usefulColors, _colors[_squareForFlowchartStartColumn])];
@@ -269,7 +269,7 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
             var indexes2 = new List<int?>();
             for (int? i = _modulePosition; i != null; i = NextSquare(i.Value))
             {
-                Scaffold.SetButtonBlack(i.Value);
+                SetButtonBlack(i.Value);
                 _colors[i.Value] = _usefulColors[Rnd.Range(0, _usefulColors.Length)];
                 indexes2.Add(i.Value);
             }
@@ -281,22 +281,22 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
             {
                 indexes2.Shuffle();
                 indexes.AddRange(indexes2);
-                Scaffold.StartSquareColorsCoroutine(_colors, indexes.ToArray());
+                StartSquareColorsCoroutine(_colors, indexes.ToArray());
             }
         }
     }
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        while (Scaffold.IsCoroutineActive)
+        while (IsCoroutineActive)
             yield return true;
 
         while (!_isSolved)
         {
-            Scaffold.Buttons[_modulePosition].OnInteract();
+            Buttons[_modulePosition].OnInteract();
             yield return new WaitForSeconds(.1f);
 
-            while (Scaffold.IsCoroutineActive)
+            while (IsCoroutineActive)
                 yield return true;
         }
     }

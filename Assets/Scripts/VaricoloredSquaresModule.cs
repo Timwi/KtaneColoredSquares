@@ -63,7 +63,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
                 _allowedPresses.Add(i);
 
         Log("Initial state: {0}", _colors.Select(c => c.ToString()[0]).JoinString(" "));
-        Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
+        StartSquareColorsCoroutine(_colors, delay: true);
         Log("First color to press is {0}.", _firstStageColor);
     }
 
@@ -76,7 +76,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
         var sequence = _updateIndices != null ? _updateIndices.ToList().Shuffle() : Enumerable.Range(0, 16).ToList().Shuffle();
         for (int i = 0; i < sequence.Count; i++)
         {
-            Scaffold.SetButtonColor(sequence[i], _colors[sequence[i]]);
+            SetButtonColor(sequence[i], _colors[sequence[i]]);
             yield return new WaitForSeconds(.03f);
         }
 
@@ -98,7 +98,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
         while (_lastPress != -1)
         {
-            Scaffold.SetButtonColor(_lastPress, lit ? SquareColor.White : _colors[_lastPress]);
+            SetButtonColor(_lastPress, lit ? SquareColor.White : _colors[_lastPress]);
             lit = !lit;
             yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -119,7 +119,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
     private void GenerateRules()
     {
-        var rnd = Scaffold.RuleSeedable.GetRNG();
+        var rnd = RuleSeedable.GetRNG();
 
         // Add more random spread
         for (int i = 0; i < 13; i++)
@@ -245,7 +245,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
             StopCoroutine(_activeCoroutine);
 
         if (_lastPress != -1)
-            Scaffold.SetButtonColor(_lastPress, _colors[_lastPress]);
+            SetButtonColor(_lastPress, _colors[_lastPress]);
 
         if (_lastPress == -1 && _allowedPresses.Contains(index))
         {
@@ -286,8 +286,8 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
                 while (currentColor == _colors[index])
                     _colors[index] = _colorCandidates[Rnd.Range(0, _colorCandidates.Length)];
                 _pressesWithoutChange = 0;
-                Scaffold.SetButtonBlack(index);
-                Scaffold.Audio.PlaySoundAtTransform("colorreset", Scaffold.Buttons[index].transform);
+                SetButtonBlack(index);
+                Audio.PlaySoundAtTransform("colorreset", Buttons[index].transform);
             }
 
             if (_colors.All(c => c == _colors[0]))
@@ -305,15 +305,15 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        while (Scaffold.IsCoroutineActive || _animating > 0)
+        while (IsCoroutineActive || _animating > 0)
             yield return true;
 
         while (!_isSolved)
         {
-            Scaffold.Buttons[_allowedPresses.PickRandom()].OnInteract();
+            Buttons[_allowedPresses.PickRandom()].OnInteract();
             yield return new WaitForSeconds(.1f);
 
-            while (Scaffold.IsCoroutineActive || _animating > 0)
+            while (IsCoroutineActive || _animating > 0)
                 yield return true;
             yield return new WaitForSeconds(.25f);
         }

@@ -26,7 +26,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
 
     void Start()
     {
-        var rnd = Scaffold.RuleSeedable.GetRNG();
+        var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);
         if (rnd.Seed == 1)
         {
@@ -86,7 +86,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
                 _allowedPresses.Add(i);
                 _expectedPresses.Add(i);
             }
-        Scaffold.StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
+        StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
         Log("First stage color is {0}. Count: {1}.", _firstStageColor, minCount);
         LogDebug("Colors: {0}", _colors.JoinString(", "));
     }
@@ -107,7 +107,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
             PlaySound(index);
             _expectedPresses.Remove(index);
             _colors[index] = SquareColor.White;
-            Scaffold.SetButtonColor(index, SquareColor.White);
+            SetButtonColor(index, SquareColor.White);
             if (_expectedPresses.Count == 0)
             {
                 var whiteCount = _colors.Count(c => c == SquareColor.White);
@@ -124,7 +124,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
                     var nonWhite = Enumerable.Range(0, 16).Where(i => _colors[i] != SquareColor.White).ToArray();
                     foreach (var i in nonWhite)
                     {
-                        Scaffold.SetButtonBlack(i);
+                        SetButtonBlack(i);
                         _colors[i] = (SquareColor) Rnd.Range(1, 6);
                     }
 
@@ -167,7 +167,7 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
                             }
                     }
                     _lastStage = nextStage;
-                    Scaffold.StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
+                    StartSquareColorsCoroutine(_colors, SquaresToRecolor.NonwhiteOnly, delay: true);
                 }
             }
         }
@@ -177,10 +177,10 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
     {
         while (!_isSolved)
         {
-            Scaffold.Buttons[_expectedPresses.First()].OnInteract();
+            Buttons[_expectedPresses.First()].OnInteract();
             yield return new WaitForSeconds(.1f);
 
-            while (Scaffold.IsCoroutineActive)
+            while (IsCoroutineActive)
                 yield return true;
         }
     }

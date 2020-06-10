@@ -36,7 +36,7 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
     void Start()
     {
         // Start of rule-seed code
-        var rnd = Scaffold.RuleSeedable.GetRNG();
+        var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);
 
         var colors = _allColors.ToArray();
@@ -82,7 +82,7 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
         Log("Colors on module: {0}", _colors.JoinString(", "));
         Log("Expected key presses: {0}", _expectedPresses.Select(i => string.Format("{0}{1}", (char) ('A' + (i % 4)), i / 4 + 1)).JoinString(", "));
 
-        Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
+        StartSquareColorsCoroutine(_colors, delay: true);
     }
 
     protected override void ButtonPressed(int index)
@@ -101,7 +101,7 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
             PlaySound(index);
             _expectedPresses.Remove(index);
             _colors[index] = SquareColor.White;
-            Scaffold.SetButtonColor(index, SquareColor.White);
+            SetButtonColor(index, SquareColor.White);
             if (_expectedPresses.Count == 0)
             {
                 _expectedPresses = null;
@@ -115,10 +115,10 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
     {
         while (!_isSolved)
         {
-            Scaffold.Buttons[_expectedPresses.First()].OnInteract();
+            Buttons[_expectedPresses.First()].OnInteract();
             yield return new WaitForSeconds(.1f);
 
-            while (Scaffold.IsCoroutineActive)
+            while (IsCoroutineActive)
                 yield return true;
         }
     }

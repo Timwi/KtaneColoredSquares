@@ -28,7 +28,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
 
     void Start()
     {
-        var rnd = Scaffold.RuleSeedable.GetRNG();
+        var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);
 
         var skip = rnd.Next(0, 6);
@@ -49,7 +49,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
 
     private void SetInitialState()
     {
-        Scaffold.SetAllButtonsBlack();
+        SetAllButtonsBlack();
 
         // Decide which color is the “neutral” color (the remaining four are the “live” ones)
         var colors = _usefulColors.ToArray().Shuffle();
@@ -65,7 +65,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
             _colors[_rememberedPositions[i]] = _rememberedColors[i];
 
         Log("Initial colors are: {0}", _rememberedColors.Select((c, cIx) => string.Format("{0} at {1}", c, coord(_rememberedPositions[cIx]))).Join(", "));
-        Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
+        StartSquareColorsCoroutine(_colors, delay: true);
     }
 
     private static string coord(int ix) { return ((char) ('A' + (ix % 4))) + "" + (ix / 4 + 1); }
@@ -93,13 +93,13 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
             if (_subprogress == 4)
             {
                 Log("You pressed them in this order: {0}", Enumerable.Range(0, 4).Select(ix => string.Format("{0} ({1})", coord(_rememberedPositions[ix]), _rememberedColors[ix])).Join(", "));
-                Scaffold.SetAllButtonsBlack();
+                SetAllButtonsBlack();
                 SetStage(1);
             }
             else
             {
                 _colors[index] = SquareColor.White;
-                Scaffold.SetButtonColor(index, SquareColor.White);
+                SetButtonColor(index, SquareColor.White);
             }
             return;
         }
@@ -115,7 +115,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
         PlaySound(index);
         _subprogress++;
         _colors[index] = SquareColor.White;
-        Scaffold.SetButtonColor(index, SquareColor.White);
+        SetButtonColor(index, SquareColor.White);
         Log("{0} was correct.", coord(index));
         if (_subprogress == _expectedPresses.Count)
             SetStage(_stage + 1);
@@ -127,7 +127,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
         _subprogress = 0;
         for (int i = 0; i < 16; i++)
             if (_colors[i] != SquareColor.White)
-                Scaffold.SetButtonBlack(i);
+                SetButtonBlack(i);
 
         if (stage == 5)
         {
@@ -169,7 +169,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
             _expectedPresses.Add(solutionSquare);
         }
 
-        Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
+        StartSquareColorsCoroutine(_colors, delay: true);
     }
 
     private int process(int sq, Instruction instruction)
@@ -200,26 +200,26 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
 
     IEnumerator TwitchHandleForcedSolve()
     {
-        while (Scaffold.IsCoroutineActive)
+        while (IsCoroutineActive)
             yield return true;
 
         // Press the four “live” colors in the preliminary stage
         for (var i = 0; i < 16 && _stage == 0; i++)
             if (_colors[i] != SquareColor.White && _colors[i] != _neutralColor)
             {
-                Scaffold.Buttons[i].OnInteract();
+                Buttons[i].OnInteract();
                 yield return new WaitForSeconds(.1f);
             }
 
-        while (Scaffold.IsCoroutineActive)
+        while (IsCoroutineActive)
             yield return true;
 
         while (!_isSolved)
         {
-            Scaffold.Buttons[_expectedPresses[_subprogress]].OnInteract();
+            Buttons[_expectedPresses[_subprogress]].OnInteract();
             yield return new WaitForSeconds(.1f);
 
-            while (Scaffold.IsCoroutineActive)
+            while (IsCoroutineActive)
                 yield return true;
         }
     }

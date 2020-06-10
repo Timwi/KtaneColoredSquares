@@ -45,7 +45,7 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
 
     void Start()
     {
-        var rnd = Scaffold.RuleSeedable.GetRNG();
+        var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);
 
         var shapes = new List<bool[,]>();
@@ -75,7 +75,7 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
             for (int i = 0; i < 16; i++)
             {
                 _colors[i] = SquareColor.White;
-                Scaffold.SetButtonBlack(i);
+                SetButtonBlack(i);
             }
         }
         else
@@ -93,7 +93,7 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
                     case SquareColor.Blue:
                     case SquareColor.Yellow:
                     case SquareColor.Magenta:
-                        Scaffold.SetButtonBlack(i);
+                        SetButtonBlack(i);
                         sq++;
                         break;
 
@@ -196,7 +196,7 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
         Log("{0} stage color pair is {1}/{2}", isStart ? "First" : "Next", combination.First, combination.Second);
         _permissiblePatterns = combination.Placements;
         _squaresPressedThisStage.Clear();
-        Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
+        StartSquareColorsCoroutine(_colors, delay: true);
     }
 
     protected override void ButtonPressed(int index)
@@ -213,7 +213,7 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
             _permissiblePatterns.RemoveAll(lst => !lst.Contains(index));
             _squaresPressedThisStage.Add(index);
             _colors[index] = SquareColor.White;
-            Scaffold.SetButtonColor(index, SquareColor.White);
+            SetButtonColor(index, SquareColor.White);
 
             if (_permissiblePatterns.Count == 1 && _squaresPressedThisStage.Count == _permissiblePatterns[0].Count)
                 SetStage(isStart: false);
@@ -227,10 +227,10 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
             var pattern = _permissiblePatterns[0];
             foreach (var index in pattern)
             {
-                Scaffold.Buttons[index].OnInteract();
+                Buttons[index].OnInteract();
                 yield return new WaitForSeconds(.1f);
             }
-            while (Scaffold.IsCoroutineActive)
+            while (IsCoroutineActive)
                 yield return true;
         }
     }
