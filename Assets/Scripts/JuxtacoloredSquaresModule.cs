@@ -79,6 +79,7 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
         if (_expectedPresses.Count == 0)
             goto tryAgain;
         _allowedPresses = new HashSet<int>(_expectedPresses);
+        Log("Colors on module: {0}", _colors.JoinString(", "));
         Log("Expected key presses: {0}", _expectedPresses.Select(i => string.Format("{0}{1}", (char) ('A' + (i % 4)), i / 4 + 1)).JoinString(", "));
 
         Scaffold.StartSquareColorsCoroutine(_colors, delay: true);
