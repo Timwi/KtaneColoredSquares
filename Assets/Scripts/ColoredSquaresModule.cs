@@ -67,12 +67,16 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
         tryAgain:
         var counts = new Dictionary<SquareColor, int>();
         foreach (var c in _colorsInUse)
-            counts[c] = 0;
+            counts[c] = 1;
+        var indexes = Enumerable.Range(0, 16).ToList().Shuffle().Take(_colorsInUse.Length).ToArray();
+        for (var i = 0; i < _colorsInUse.Length; i++)
+            _colors[indexes[i]] = _colorsInUse[i];
         for (int i = 0; i < 16; i++)
-        {
-            _colors[i] = _colorsInUse.PickRandom();
-            counts[_colors[i]]++;
-        }
+            if (!indexes.Contains(i))
+            {
+                _colors[i] = _colorsInUse.PickRandom();
+                counts[_colors[i]]++;
+            }
         var minCount = _colorsInUse.Min(c => counts[c]);
         if (counts.Count(kvp => kvp.Value == minCount) > 1)
             goto tryAgain;
