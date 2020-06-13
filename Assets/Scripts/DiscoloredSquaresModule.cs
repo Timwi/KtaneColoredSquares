@@ -143,11 +143,9 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
             _colors[availableSquares[i]] = _rememberedColors[stage - 1];
 
         // Fill the rest of the grid with the other colors
+        var otherColors = _usefulColors.Where(c => c != _rememberedColors[stage - 1]).ToArray();
         for (int i = take; i < availableSquares.Count; i++)
-        {
-            var cl = Rnd.Range(1, 5);
-            _colors[availableSquares[i]] = (SquareColor) (cl >= (int) _rememberedColors[stage - 1] ? cl + 1 : cl);
-        }
+            _colors[availableSquares[i]] = otherColors.PickRandom();
 
         var relevantSquares = availableSquares.Take(take).OrderBy(sq => _ordersByStage[stage - 1][sq]).ToArray();
         Log("Stage {0}: {1} squares in the correct order are {2}.", stage, _rememberedColors[stage - 1], relevantSquares.Select(sq => coord(sq)).Join(", "));
