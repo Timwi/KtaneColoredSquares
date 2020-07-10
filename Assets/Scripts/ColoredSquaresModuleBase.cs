@@ -116,6 +116,7 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
                 _scaffold.Audio.PlaySoundAtTransform("redlight", _scaffold.Buttons[index].transform);
                 break;
             case SquareColor.Blue:
+            case SquareColor.DarkBlue:
             case SquareColor.Orange:
             case SquareColor.Brown:
             case SquareColor.Gray:
