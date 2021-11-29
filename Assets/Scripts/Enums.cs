@@ -28,7 +28,8 @@
     public enum SquaresToRecolor
     {
         All,
-        NonwhiteOnly
+        NonwhiteOnly,
+        NonblackOnly
     }
 
     // Discolored Squares only
