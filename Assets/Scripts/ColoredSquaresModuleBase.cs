@@ -58,6 +58,10 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
         for (int i = 0; i < 16; i++)
             _scaffold.Buttons[i].OnInteract = MakeButtonHandler(i);
         SetAllButtonsBlack();
+    }
+
+    private void Start()
+    {
         for (int i = 0; i < 16; i++)
             _scaffold.Lights[i].range = .1f * _module.transform.lossyScale.x;
     }
