@@ -34,7 +34,7 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
     private Coroutine _activeCoroutine;
     private int _animating = 0;
 
-    void Start()
+    protected override void DoStart()
     {
         GenerateRules();
         SetInitialState();

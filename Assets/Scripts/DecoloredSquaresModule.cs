@@ -56,7 +56,7 @@ public class DecoloredSquaresModule : ColoredSquaresModuleBase
     private string _color1;
     private string _color2;
 
-    void Start()
+    protected override void DoStart()
     {
         var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);

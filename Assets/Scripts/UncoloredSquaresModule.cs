@@ -43,7 +43,7 @@ public class UncoloredSquaresModule : ColoredSquaresModuleBase
 
     static T[] newArray<T>(params T[] array) { return array; }
 
-    void Start()
+    protected override void DoStart()
     {
         var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);

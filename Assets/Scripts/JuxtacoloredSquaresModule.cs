@@ -33,7 +33,7 @@ public class JuxtacoloredSquaresModule : ColoredSquaresModuleBase
         SquareColor.Gray, SquareColor.Jade, SquareColor.Magenta, SquareColor.Mauve,
         SquareColor.Orange, SquareColor.Purple, SquareColor.Red, SquareColor.Yellow };
 
-    void Start()
+    protected override void DoStart()
     {
         // Start of rule-seed code
         var rnd = RuleSeedable.GetRNG();

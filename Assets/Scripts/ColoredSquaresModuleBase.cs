@@ -64,7 +64,10 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
     {
         for (int i = 0; i < 16; i++)
             _scaffold.Lights[i].range = .1f * _module.transform.lossyScale.x;
+        DoStart();
     }
+
+    protected abstract void DoStart();
 
     private KMSelectable.OnInteractHandler MakeButtonHandler(int index)
     {

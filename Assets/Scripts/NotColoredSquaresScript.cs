@@ -30,7 +30,7 @@ public sealed class NotColoredSquaresScript : ColoredSquaresModuleBase
         newArray(SquareColor.Blue, SquareColor.Yellow, SquareColor.Magenta, SquareColor.Red, SquareColor.Yellow, SquareColor.Green, SquareColor.Yellow, SquareColor.Magenta, SquareColor.Blue, SquareColor.Yellow, SquareColor.Magenta, SquareColor.Blue, SquareColor.Red, SquareColor.Magenta, SquareColor.Green, SquareColor.Green)
         );
 
-    private void Start()
+    protected override void DoStart()
     {
         SetInitialState();
     }

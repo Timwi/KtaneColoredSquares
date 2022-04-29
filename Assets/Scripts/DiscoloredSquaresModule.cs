@@ -26,7 +26,7 @@ public class DiscoloredSquaresModule : ColoredSquaresModuleBase
     private List<int> _expectedPresses;
     private int _subprogress;
 
-    void Start()
+    protected override void DoStart()
     {
         var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);

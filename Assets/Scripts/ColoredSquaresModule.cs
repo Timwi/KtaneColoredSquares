@@ -25,14 +25,14 @@ public class ColoredSquaresModule : ColoredSquaresModuleBase
 
     static T[] newArray<T>(params T[] array) { return array; }
 
-    void Start()
+    protected override void DoStart()
     {
         var rnd = RuleSeedable.GetRNG();
         Log("Using rule seed: {0}", rnd.Seed);
         if (rnd.Seed == 1)
         {
-            // false = Column; true = Row
             _table = newArray(
+                // false = Column; true = Row
                 new object[] { SquareColor.Blue, false, SquareColor.Red, SquareColor.Yellow, true, SquareColor.Green, SquareColor.Magenta },
                 new object[] { true, SquareColor.Green, SquareColor.Blue, SquareColor.Magenta, SquareColor.Red, false, SquareColor.Yellow },
                 new object[] { SquareColor.Yellow, SquareColor.Magenta, SquareColor.Green, true, SquareColor.Blue, SquareColor.Red, false },
