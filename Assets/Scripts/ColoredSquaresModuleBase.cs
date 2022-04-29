@@ -217,7 +217,7 @@ public abstract class ColoredSquaresModuleBase : MonoBehaviour
     {
         if (command.Trim().Equals("colorblind", StringComparison.InvariantCultureIgnoreCase))
         {
-            _colorblind = true;
+            _colorblind = !_colorblind;
             StartSquareColorsCoroutine(_colors);
             yield return null;
             yield break;
