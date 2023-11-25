@@ -1,0 +1,10 @@
+{
+  "name": "ColoredSquares-Editor",
+  "references": [
+    "ColoredSquares"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": []
+}

@@ -241,6 +241,9 @@ public class VaricoloredSquaresModule : ColoredSquaresModuleBase
 
     protected override void ButtonPressed(int index)
     {
+        if (_allowedPresses == null)    // Module is solved
+            return;
+
         if (_activeCoroutine != null)
             StopCoroutine(_activeCoroutine);
 
